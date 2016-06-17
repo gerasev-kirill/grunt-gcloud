@@ -26,10 +26,11 @@ module.exports = function(grunt) {
       }).storage(),
       bucket = storage.bucket(options.bucket);
 
+    var _this = this;
     this.files.forEach(function(filePair) {
       filePair.src.forEach(function(src) {
-        var srcFile = filePair.cwd + '/' + src,
-          destFile = filePair.dest + '/' + src;
+        var srcFile = (_this.data.expand) ? src : filePair.cwd + '/' + src;
+        var destFile = (_this.data.expand) ? filePair.dest : (filePair.dest === undefined || filePair.dest === '') ? src : filePair.dest + src; 
 
         if (!grunt.file.isDir(srcFile)) {
           asyncTasks.push(
