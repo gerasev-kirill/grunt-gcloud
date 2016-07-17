@@ -17,7 +17,8 @@ module.exports = function(grunt) {
     var done = this.async(),
       options = this.options({
         keyFilename: '.gcloud.json',
-        options: {}
+        options: {},
+        appendSlash: false
       }),
       gcloud = require('gcloud'),
       storage = gcloud({
@@ -39,6 +40,9 @@ module.exports = function(grunt) {
               if (!bucketOptions.hasOwnProperty('gzip')){
                   bucketOptions.gzip = true;
               }
+              if (options.appendSlash){
+                  destFile = "/" + destFile;
+              }
               bucketOptions.destination = destFile;
 
               bucket.upload(srcFile, bucketOptions, function(err, file) {
@@ -46,7 +50,7 @@ module.exports = function(grunt) {
                   grunt.fail.warn(err);
                 }
 
-                grunt.log.ok('Uploading [' + file.options.name + ']');
+                grunt.log.ok('Uploading [' + file.name + ']');
 
                 callback();
               });
