@@ -17,7 +17,7 @@ module.exports = function(grunt) {
     var done = this.async(),
       options = this.options({
         keyFilename: '.gcloud.json',
-        metadata: {}
+        options: {}
       }),
       gcloud = require('gcloud'),
       storage = gcloud({
@@ -30,19 +30,23 @@ module.exports = function(grunt) {
     this.files.forEach(function(filePair) {
       filePair.src.forEach(function(src) {
         var srcFile = (_this.data.expand) ? src : filePair.cwd + '/' + src;
-        var destFile = (_this.data.expand) ? filePair.dest : (filePair.dest === undefined || filePair.dest === '') ? src : filePair.dest + src; 
+        var destFile = (_this.data.expand) ? filePair.dest : (filePair.dest === undefined || filePair.dest === '') ? src : filePair.dest + src;
 
         if (!grunt.file.isDir(srcFile)) {
           asyncTasks.push(
             function(callback) {
-              var metadata = JSON.parse(JSON.stringify(options.metadata));
+              var bucketOptions = JSON.parse(JSON.stringify(options.options));
+              if (!bucketOptions.hasOwnProperty('gzip')){
+                  bucketOptions.gzip = true;
+              }
+              bucketOptions.destination = destFile;
 
-              bucket.upload(srcFile, destFile, metadata, function(err, file) {
+              bucket.upload(srcFile, bucketOptions, function(err, file) {
                 if (err) {
                   grunt.fail.warn(err);
                 }
-                
-                grunt.log.ok('Uploading [' + file.metadata.name + ']');
+
+                grunt.log.ok('Uploading [' + file.options.name + ']');
 
                 callback();
               });

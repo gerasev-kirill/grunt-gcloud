@@ -10,7 +10,7 @@ This plugin requires Grunt `~0.4.5`
 If you haven't used [Grunt](http://gruntjs.com/) before, be sure to check out the [Getting Started](http://gruntjs.com/getting-started) guide, as it explains how to create a [Gruntfile](http://gruntjs.com/sample-gruntfile) as well as install and use Grunt plugins. Once you're familiar with that process, you may install this plugin with this command:
 
 ```shell
-npm install grunt-gcloud --save-dev
+npm install https://github.com/gerasev-kirill/grunt-gcloud.git --save-dev
 ```
 
 Once the plugin has been installed, it may be enabled inside your Gruntfile with this line of JavaScript:
@@ -55,11 +55,11 @@ The Bucket name.
 Type: `String`
 Default value: `'.gcloud.json'`
 
-#### options.metadata
+#### options.options
 Type: `Object`
-Default value: `null`
+Default value: {gzip: true}
 
-A object with metadata.
+A object with options (for more info see: https://googlecloudplatform.github.io/gcloud-node/#/docs/v0.36.0/storage/bucket?method=upload)
 
 ### Usage Examples
 
